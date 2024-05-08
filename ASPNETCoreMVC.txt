@@ -1,0 +1,176 @@
+ASP.NET MVC Project
+
+1. Create ASP.Net Core Empty project
+
+2. Open program.cs file and edit
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+
+app.UseRouting();
+
+app.MapControllerRoute(
+    name: "default", 
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
+
+app.Run();
+
+3. Create controller
+CategoriesController
+
+public string Index()
+{
+    return "This is category page";
+}
+
+ActionResult
+public IActionResult Index()
+{
+    return View();
+}
+
+Creating views
+Right click on function name, select Add View, Razor View - Empty
+
+Passing parameters to Action Results
+public IActionResult Edit(int id)
+{
+    return new ContentResult { Content = id.ToString() };
+}
+
+Optional Parameters
+public IActionResult Edit(int? id)
+{
+    if(id.hasValue)
+        return new ContentResult { Content = id.ToString() };
+    else
+        return new ContentResult { Content = "null content" };
+}
+
+Query String
+Query string name should match the variable name passed to the ActionResult
+http://localhost:5292/categories/edit?id=2
+public IActionResult Edit(int id)
+{
+    return new ContentResult { Content = id.ToString() };
+}
+
+Passing model to View
+public IActionResult Edit(int? id)
+{
+    var category = new Category { CategoryId = id.HasValue ? id.Value : 0 };
+    return View(category);
+}
+
+@model SuperMarketMVC.Models.Category
+<h3>Category: @Model.CategoryId</h3>
+
+Accessing public/static file
+In Program.cs, add a middleware 
+    app.UseStaticFiles()
+
+Creating Layout
+1. Creating content placeholder
+<div class="container">
+    <div>
+        @RenderBody()
+    </div>
+</div>
+2. Creating section placeholder
+    <div class="pb-3">
+        @RenderSection("title")
+    </div>
+    @section title{
+        <h3>Category: @Model.CategoryId</h3>
+    }
+    By default section title will be required by every view using the layout. The second parameter passed to RenderSection is optional and it is True by default. If some views do not require this section, set second parameter to false.
+    <div class="pb-3">
+        @RenderSection("title", false)
+    </div>
+
+
+Displaying data on View
+@foreach(var category in Model)
+{
+    <tr>
+        <td>@category.CategoryId</td>
+        <td>@category.Name</td>
+        <td>@category.Description</td>
+        <td>
+            <a class="btn btn-link" href="@($"/categories/edit/{category.CategoryId}")">Edit</a>
+        </td>
+    </tr>
+}
+
+Adding Tag helper to navigation links
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@foreach(var category in Model)
+{
+    <tr>
+        <td>@category.CategoryId</td>
+        <td>@category.Name</td>
+        <td>@category.Description</td>
+        <td>
+            <a class="btn btn-link" asp-controller="categories" asp-action="edit" asp-route-id="@category.CategoryId">Edit</a>
+        </td>
+    </tr>
+}
+
+Creating Layout
+Views>Shared>_layout.cshtml
+<header></header>
+@RenderSection("title")
+<div>
+@RenderBody()
+</div>
+<footer></footer>
+
+Setting Layout for Views
+View>_ViewStart.cshtml
+@{
+    Layout = "_Layout";
+}
+
+
+Common settings for Views
+Views>_viewImports.cshtml
+@using SuperMarketMVC.Models;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+Model Binding
+public IActionResult Edit([FromRoute]int? id){...}
+http://localhost:5292/categories/edit/1
+
+public IActionResult Edit([FromQuery]int? id){...}
+http://localhost:5292/categories/edit?id=1
+
+
+Tag Helpers for creating form
+<form method="post" asp-controller="categories" asp-action="update">...</form>
+
+<input type="text" asp-for="Name" class="form-control" placeholder="Name" />
+<label asp-for="Name"></label>
+
+Validation
+[Required]
+public string Name { get; set; } = string.Empty;
+
+<div class="text-danger" asp-validation-summary="All"></div>
+
+<span class="text-danger" asp-validation-for="Name"></span>
+
+
+
+
+
+
+
+
+
+
+
+
