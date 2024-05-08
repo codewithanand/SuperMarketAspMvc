@@ -26,3 +26,4 @@ E:\ASP.NET\SuperMarketMVC\obj\Debug\net8.0\ref\SuperMarketMVC.dll
 E:\ASP.NET\SuperMarketMVC\obj\Debug\net8.0\SuperMarketMVC.RazorAssemblyInfo.cache
 E:\ASP.NET\SuperMarketMVC\obj\Debug\net8.0\SuperMarketMVC.RazorAssemblyInfo.cs
 E:\ASP.NET\SuperMarketMVC\bin\Debug\net8.0\SuperMarketMVC.staticwebassets.runtime.json
+E:\ASP.NET\SuperMarketMVC\obj\Debug\net8.0\SuperMarketMVC.sourcelink.json

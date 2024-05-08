@@ -1,4 +1,6 @@
-﻿namespace SuperMarketMVC.Models
+﻿using System.Diagnostics;
+
+namespace SuperMarketMVC.Models
 {
     public static class CategoriesRepository
     {
@@ -37,7 +39,7 @@
         {
             if (categoryId != category.CategoryId) return;
 
-            var categoryToUpdate = GetCategoryById(categoryId);
+            var categoryToUpdate = _categories.FirstOrDefault(c => c.CategoryId == categoryId);
             if (categoryToUpdate != null)
             {
                 categoryToUpdate.Name = category.Name;
@@ -48,7 +50,7 @@
         public static void DeleteCategory(int categoryId)
         {
             var category = _categories.FirstOrDefault(c => c.CategoryId == categoryId);
-            if(category != null)
+            if (category != null)
             {
                 _categories.Remove(category);
             }
